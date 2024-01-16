@@ -1,0 +1,40 @@
+---
+title: "01-preparacion"
+author: "Kevin Carrasco"
+date: "2024-01-16"
+output: html_document
+---
+
+# packages
+
+```{r packages}
+devtools::install_github("rubenarslan/formr")
+pacman::p_load(formr, dplyr, haven, writexl)
+```
+
+
+# Descargar base desde formR
+
+```{r}
+formr_connect("kevin.carrasco@ug.uchile.cl", "k959371343") # credenciales FormR
+data = formr_results("Encuesta") # Descargar encuesta
+writexl::write_xlsx(data, path = "input/data/original/encuesta-hvs-completa.xlsx") # Guardar en xlsx
+save(data, file="input/data/original/encuesta-hvs-completa.RData") # Guardar en RData
+```
+
+# Filtrar solo respuestas con información
+
+```{r}
+hvs <- data %>% filter(!is.na(carac_d1))
+`%!in%` <- Negate(`%in%`)
+hvs <- hvs %>% filter(carac_d1 %!in% c('a', 'Agustiniano')) # eliminar dos casos de etapa prueba
+hvs <- hvs %>% dplyr::select(-session, -created, -modified, -ended, -expired, -start_01, -hva, -ha, -ge)
+completas <- hvs %>% filter(!is.na(ge_4))
+
+save(hvs, file="input/data/proc/encuesta_hvs.RData")
+```
+
+
+
+
+
