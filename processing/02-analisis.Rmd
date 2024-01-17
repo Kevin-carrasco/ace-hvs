@@ -1,0 +1,29 @@
+---
+title: "02-analisis"
+author: "Kevin Carrasco"
+date: "2024-01-17"
+output: html_document
+---
+
+```{r packages}
+pacman::p_load(dplyr, ggplot2, sjmisc, sjlabelled, sjPlot, ggrepel)
+```
+
+```{r data}
+load("input/data/proc/hvs_proc.RData")
+```
+
+```{r}
+plot_hva <- sjPlot::plot_stackfrq(dplyr::select(hvs, starts_with("hva_")),
+                      vjust=rep(c("bottom", "top", "bottom", "top"),7),
+                      sort.frq = "last.desc",
+                      expand.grid =TRUE
+                      )+
+  theme_bw() +
+  theme(legend.position="bottom")
+
+plot_hva
+
+ggsave(plot_hva, file="output/graphs/plot_hva.png")
+```
+

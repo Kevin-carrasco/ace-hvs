@@ -1,5 +1,0 @@
-"0","hvs <- dplyr::select(-session, -created, -modified, -ended, -expired, -start_01)
-"
-"2","Error in dplyr::select(-session, -created, -modified, -ended, -expired,  : 
-  object 'session' not found
-"

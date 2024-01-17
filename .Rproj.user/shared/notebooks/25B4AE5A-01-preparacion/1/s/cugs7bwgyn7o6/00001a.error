@@ -1,1 +1,0 @@
-{"frames":[{"func":"dplyr::select(-session, -created, -modified, -ended, -expired, \n    -start_01)","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0}],"message":"Error in dplyr::select(-session, -created, -modified, -ended, -expired,  : \n  object 'session' not found\n"}
