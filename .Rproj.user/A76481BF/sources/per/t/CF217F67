@@ -3,7 +3,7 @@
     "path": "~/ace-hvs/processing/02-analisis.Rmd",
     "project_path": "processing/02-analisis.Rmd",
     "type": "r_markdown",
-    "hash": "736470882",
+    "hash": "31952336",
     "contents": "",
     "dirty": false,
     "created": 1705461811271.0,
@@ -13,15 +13,15 @@
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "27,0",
-        "scrollLine": "0"
+        "cursorPosition": "24,0",
+        "scrollLine": "13"
     },
     "folds": "",
-    "lastKnownWriteTime": 1705464109,
+    "lastKnownWriteTime": 1705503440,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1705464142580,
+    "last_content_update": 1705503440540,
     "read_only": false,
     "read_only_alternatives": []
 }

@@ -2,8 +2,44 @@
 title: "02-analisis"
 author: "Kevin Carrasco"
 date: "2024-01-17"
-output: html_document
+output:
+  rmdformats::readthedown:
+    css: color.css
+    highlight: tango
+    code_folding: hide
+    self_contained: true
+    thumbnails: false
+    lightbox: false
 ---
+
+```{r setup}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	results = "asis",
+	message = FALSE,
+	warning = FALSE, 
+	fig.height = 18, 
+	fig.width = 11, 
+	cache = TRUE
+)
+
+options(scipen=9999) # desactivar notacion cientifica
+remove(list = ls()) #limpieza del entorno de trabajo
+```
+
+```{css, echo=FALSE}
+# /* expandir el espacio del documento*/
+body .main-container {
+      max-width: 1600px !important;
+      width: 1600px !important;
+    }
+#/* expandir width de la TOC*/
+div.tocify {
+    width: 22% !important;
+    max-width: 331px !important;
+    max-height: 102% !important;
+}
+```
 
 ```{r packages}
 pacman::p_load(dplyr, ggplot2, sjmisc, sjlabelled, sjPlot, ggrepel)
@@ -13,7 +49,9 @@ pacman::p_load(dplyr, ggplot2, sjmisc, sjlabelled, sjPlot, ggrepel)
 load("input/data/proc/hvs_proc.RData")
 ```
 
-```{r}
+# Hábitos de vida activa
+
+```{r hva}
 plot_hva <- sjPlot::plot_stackfrq(dplyr::select(hvs, starts_with("hva_")),
                       vjust=rep(c("bottom", "top", "bottom", "top"),7),
                       sort.frq = "last.desc",
@@ -24,6 +62,55 @@ plot_hva <- sjPlot::plot_stackfrq(dplyr::select(hvs, starts_with("hva_")),
 
 plot_hva
 
-ggsave(plot_hva, file="output/graphs/plot_hva.png")
+ggsave(plot_hva, file="output/graphs/plot_hva.png", width=10, height=10)
 ```
+
+# Hábitos alimenticios
+
+```{r ha}
+plot_ha <- sjPlot::plot_stackfrq(dplyr::select(hvs, starts_with("ha_")),
+                      vjust=rep(c("bottom", "top", "bottom", "top"),11),
+                      sort.frq = "last.desc",
+                      expand.grid =TRUE
+                      )+
+  theme_bw() +
+  theme(legend.position="bottom")
+
+plot_ha
+
+ggsave(plot_ha, file="output/graphs/plot_ha.png", width=10, height=10)
+```
+
+# Enfoque escolar integral
+
+```{r eei}
+plot_eei <- sjPlot::plot_stackfrq(dplyr::select(hvs, starts_with("eei_")),
+                      vjust=rep(c("bottom", "top", "bottom", "top"),16),
+                      sort.frq = "last.desc",
+                      expand.grid =TRUE
+                      )+
+  theme_bw() +
+  theme(legend.position="bottom")
+
+plot_eei
+
+ggsave(plot_eei, file="output/graphs/plot_eei.png", width=10, height=10)
+```
+
+# Gestión escolar
+
+```{r ge}
+plot_ge <- sjPlot::plot_stackfrq(dplyr::select(hvs, starts_with("ge_")),
+                      vjust=rep(c("bottom", "top", "bottom", "top"),4),
+                      sort.frq = "last.desc",
+                      expand.grid =TRUE
+                      )+
+  theme_bw() +
+  theme(legend.position="bottom")
+
+plot_ge
+
+ggsave(plot_ge, file="output/graphs/plot_ge.png")
+```
+
 
