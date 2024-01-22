@@ -47,10 +47,10 @@ pacman::p_load(dplyr, ggplot2, sjmisc, sjlabelled, sjPlot, ggrepel, Hmisc, tidyv
 
 ```
 
-```{r data}
+```{r data, include=FALSE}
 load("../input/data/proc/hvs_proc.RData")
 ```
-```{r variables}
+```{r variables, include=FALSE}
 names(hvs)
 contents(hvs)
 get_label(hvs)
@@ -58,7 +58,7 @@ get_labels(hvs)
 ```
 
 
-```{r eliminar*}
+```{r eliminar*, include=FALSE}
 # Eliminar los asteriscos de las etiquetas
 
 # Obtener nombres de las columnas con etiquetas
