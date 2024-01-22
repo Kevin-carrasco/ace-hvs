@@ -1,5 +1,0 @@
-"0","sjmisc::frq(hvs$carac_d6)
-"
-"2","Error in if ((dplyr::n_distinct(dat$label[!is.na(dat$val)]) == 1 && unique(dat$label[!is.na(dat$val)]) ==  : 
-  valor ausente donde TRUE/FALSE es necesario
-"
