@@ -92,7 +92,7 @@ plot_hva <- sjPlot::plot_stackfrq(dplyr::select(hvs, starts_with("hva_")),
                       sort.frq = "last.desc"
                       ) +
   theme_light() +
-  theme(legend.position="bottom")
+  theme(legend.position="bottom", text = element_text(size = 15))
 
 plot_hva
 
