@@ -57,13 +57,36 @@ get_label(hvs)
 get_labels(hvs)
 ```
 
+
+```{r eliminar*}
+# Eliminar los asteriscos de las etiquetas
+
+# Obtener nombres de las columnas con etiquetas
+columnas_con_etiquetas <- names(hvs)
+
+# Iterar sobre las columnas
+for (col in columnas_con_etiquetas) {
+  # Verificar si la columna tiene etiquetas
+  if (has_label(hvs[[col]])) {
+    # Modificar las etiquetas eliminando los asteriscos
+    hvs[[col]] <- set_label(hvs[[col]], gsub("\\*", "", label(hvs[[col]])))
+  }
+}
+
+# Imprimir el resultado
+get_label(hvs)
+
+
+```
+
+
 # Hábitos de vida activa
 
 ```{r hva}
 
 plot_hva <- sjPlot::plot_stackfrq(dplyr::select(hvs, starts_with("hva_")),
                       expand.grid =TRUE,
-                      geom.colors = 'Oranges',
+                      geom.colors = 'Spectral',
                       show.total = FALSE, 
                       vjust=rep(c("bottom", "top", "bottom", "top"),7),
                       sort.frq = "last.desc"
@@ -96,7 +119,10 @@ plot_porcentajes <- ggplot(hvs_long, aes(x = variable, y = porcentaje, fill = va
   labs(x = 'Estudiantes', y = "Porcentaje promedio") + 
   geom_text(aes(label = paste0(porcentaje, "%")), position = "dodge") +
   scale_fill_brewer(palette = "Spectral") +
+  theme_light() +
   theme(legend.position="none")
+
+plot_porcentajes
 
 ggsave(plot_porcentajes, file="../output/graphs/plot_hva_p.png", width=10, height=8)
 
@@ -104,28 +130,6 @@ ggsave(plot_porcentajes, file="../output/graphs/plot_hva_p.png", width=10, heigh
 
 
 # Hábitos alimenticios
-
-```{r eliminar*}
-# Eliminar los asteriscos de las etiquetas
-
-# Obtener nombres de las columnas con etiquetas
-columnas_con_etiquetas <- names(hvs)
-
-# Iterar sobre las columnas
-for (col in columnas_con_etiquetas) {
-  # Verificar si la columna tiene etiquetas
-  if (has_label(hvs[[col]])) {
-    # Modificar las etiquetas eliminando los asteriscos
-    hvs[[col]] <- set_label(hvs[[col]], gsub("\\*", "", label(hvs[[col]])))
-  }
-}
-
-# Imprimir el resultado
-get_label(hvs)
-
-
-```
-
 
 ```{r ha1}
 plot_ha1 <- sjPlot::plot_stackfrq(dplyr::select(hvs, ha_1, ha_2, ha_3, ha_4, ha_5, ha_6, ha_7, ha_8, ha_9),
