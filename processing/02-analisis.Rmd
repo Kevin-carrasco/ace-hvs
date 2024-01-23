@@ -155,8 +155,8 @@ plot_ha2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, ha_10, ha_11),
                       geom.colors = 'Spectral',
                       show.total = FALSE
                       )+
-  theme_light() +
-  theme(legend.position="bottom")
+  theme_light(base_size = 16) +
+  theme(legend.position = "bottom")
 
 plot_ha2
 
@@ -188,7 +188,7 @@ plot_eei2_1 <- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_3, eei_4, eei_5, eei
                       geom.colors = 'Spectral',
                       show.total = FALSE,
                       )+
-  theme_light() +
+  theme_light(base_size = 16) +
   theme(legend.position="bottom")
 
 
@@ -207,7 +207,7 @@ plot_eei2_2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_8, eei_9, eei_10, ee
                       geom.colors = 'Spectral',
                       show.total = FALSE,
                       )+
-  theme_light() +
+  theme_light(base_size = 14) +
   theme(legend.position="bottom")
 
 
