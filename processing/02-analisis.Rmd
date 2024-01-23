@@ -115,12 +115,12 @@ hvs_long <- tidyr::gather(hvs, key = "variable", value = "porcentaje", promedio1
 
 plot_porcentajes <- ggplot(hvs_long, aes(x = variable, y = porcentaje, fill = variable)) +
   geom_bar(stat = "identity", position = "dodge") +
-  scale_x_discrete(labels = c("Se trasladan al establecimiento\ncaminando o en bicicleta", "Practican deportes de manera extraprogramática\nen el establecimiento", "Practican deportes de\nmanera extraprogramática\nfuera del establecimiento")) +
-  labs(x = 'Estudiantes', y = "Porcentaje promedio") + 
+  scale_x_discrete(labels = c("Se trasladan al establecimiento\ncaminando o en bicicleta", "Practican deportes de manera\nextraprogramática en el establecimiento", "Practican deportes de\nmanera extraprogramática\nfuera del establecimiento")) +
+  labs(x = 'Hábitos de Estudiantes', y = "Porcentaje promedio") + 
   geom_text(aes(label = paste0(porcentaje, "%")), position = "dodge") +
   scale_fill_brewer(palette = "Spectral") +
   theme_light() +
-  theme(legend.position="none")
+  theme(legend.position="none", text = element_text(size = 15))
 
 plot_porcentajes
 
