@@ -58,7 +58,7 @@ get_labels(hvs)
 ```
 
 
-```{r eliminar*, include=FALSE}
+```{r include=FALSE}
 # Eliminar los asteriscos de las etiquetas
 
 # Obtener nombres de las columnas con etiquetas
@@ -82,22 +82,39 @@ get_label(hvs)
 
 # Hábitos de vida activa
 
-```{r hva}
+```{r hva1}
 
-plot_hva <- sjPlot::plot_stackfrq(dplyr::select(hvs, starts_with("hva_")),
+plot_hva1 <- sjPlot::plot_stackfrq(dplyr::select(hvs, hva_1, hva_2, hva_3, hva_7),
                       expand.grid =TRUE,
                       geom.colors = 'Spectral',
                       show.total = FALSE, 
-                      vjust=rep(c("bottom", "top", "bottom", "top"),7),
+                      vjust=rep(c("bottom", "top", "bottom", "top"),4),
                       sort.frq = "last.desc"
                       ) +
   theme_light() +
-  theme(legend.position="bottom")
+  theme(legend.position="bottom", text = element_text(size = 14))
 
-plot_hva
+plot_hva1
 
-ggsave(plot_hva, file="../output/graphs/plot_hva.png", width=10, height=8)
+ggsave(plot_hva1, file="../output/graphs/plot_hva1.png", width=8.4, height=8)
 ```
+
+```{r hva2}
+plot_hva2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, hva_4, hva_5, hva_6),
+                      expand.grid =TRUE,
+                      geom.colors = 'Spectral',
+                      show.total = FALSE, 
+                      vjust=rep(c("bottom", "top", "bottom", "top"),3),
+                      sort.frq = "last.desc"
+                      ) +
+  theme_light() +
+  theme(legend.position="bottom", text = element_text(size = 14))
+
+plot_hva2
+
+ggsave(plot_hva2, file="../output/graphs/plot_hva2.png", width=8.4, height=8)
+```
+
 
 ```{r hva porcentajes}
 
@@ -115,37 +132,57 @@ hvs_long <- tidyr::gather(hvs, key = "variable", value = "porcentaje", promedio1
 
 plot_porcentajes <- ggplot(hvs_long, aes(x = variable, y = porcentaje, fill = variable)) +
   geom_bar(stat = "identity", position = "dodge") +
-  scale_x_discrete(labels = c("Se trasladan al establecimiento\ncaminando o en bicicleta", "Practican deportes de manera extraprogramática\nen el establecimiento", "Practican deportes de\nmanera extraprogramática\nfuera del establecimiento")) +
-  labs(x = 'Estudiantes', y = "Porcentaje promedio") + 
+  scale_x_discrete(labels = c("Se trasladan al establecimiento\ncaminando o en bicicleta", "Practican deportes de manera\nextraprogramática en el establecimiento", "Practican deportes de\nmanera extraprogramática\nfuera del establecimiento")) +
+  labs(x = 'Hábitos de Estudiantes', y = "Porcentaje promedio") + 
   geom_text(aes(label = paste0(porcentaje, "%")), position = "dodge") +
   scale_fill_brewer(palette = "Spectral") +
   theme_light() +
-  theme(legend.position="none")
+  theme(legend.position="none", text = element_text(size = 14))
 
 plot_porcentajes
 
-ggsave(plot_porcentajes, file="../output/graphs/plot_hva_p.png", width=10, height=8)
+ggsave(plot_porcentajes, file="../output/graphs/plot_hva_p.png", width=8.4, height=8)
 
 ```
 
 
 # Hábitos alimenticios
 
-```{r ha1}
-plot_ha1 <- sjPlot::plot_stackfrq(dplyr::select(hvs, ha_1, ha_2, ha_3, ha_4, ha_5, ha_6, ha_7, ha_8, ha_9),
-                      vjust=rep(c("bottom", "top", "bottom", "top"),9),
+```{r ha1_1}
+plot_ha1_1 <- sjPlot::plot_stackfrq(dplyr::select(hvs, ha_1, ha_2, ha_3, ha_9),
+                      vjust=rep(c("bottom", "top", "bottom", "top"),4),
                       expand.grid =TRUE,
                       sort.frq = "last.desc",
                       geom.colors = 'Spectral',
                       show.total = FALSE
                       )+
   theme_light() +
-  theme(legend.position="bottom")
+  theme(legend.position="bottom", text = element_text(size = 14))
 
-plot_ha1
+plot_ha1_1
 
-ggsave(plot_ha1, file="../output/graphs/plot_ha1.png", width=10, height=8)
+ggsave(plot_ha1_1, file="../output/graphs/plot_ha1_1.png", width=8.4, height=8)
 ```
+
+```{r ha_1_2}
+
+plot_ha1_2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, ha_4, ha_5, ha_6, ha_7, ha_8),
+                      vjust=rep(c("bottom", "top", "bottom", "top"),5),
+                      expand.grid =TRUE,
+                      sort.frq = "last.desc",
+                      geom.colors = 'Spectral',
+                      show.total = FALSE
+                      )+
+  theme_light() +
+  theme(legend.position="bottom", text = element_text(size = 14))
+
+plot_ha1_2
+
+ggsave(plot_ha1_2, file="../output/graphs/plot_ha1_2.png", width=8.4, height=8)
+
+
+```
+
 
 ```{r ha2}
 plot_ha2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, ha_10, ha_11),
@@ -155,112 +192,101 @@ plot_ha2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, ha_10, ha_11),
                       geom.colors = 'Spectral',
                       show.total = FALSE
                       )+
-  theme_light(base_size = 16) +
-  theme(legend.position = "bottom")
+  theme_light() +
+  theme(legend.position = "bottom", text = element_text(size = 14))
 
 plot_ha2
 
-ggsave(plot_ha2, file="../output/graphs/plot_ha2.png", width=10, height=8)
+ggsave(plot_ha2, file="../output/graphs/plot_ha2.png", width=8.4, height=8)
 
 ```
 
 # Enfoque escolar integral
 
-```{r eei1}
-plot_eei1 <- hvs %>% 
-  filter(eei_2_1 %in% c(2, 3, 4)) %>% 
-  ggplot(aes(x = eei_2_1)) + 
-  geom_bar(fill = '#d96868',width = 0.5) + scale_x_discrete(labels = c("Casi nada", "Algo", "Mucho")) +
-  theme_light() +
-  xlab('Respuesta') + ylab('Cantidad')
-
-plot_eei1
-
-ggsave(plot_eei1, file="../output/graphs/plot_eei1.png", width=10, height=8)
-```
-
 ```{r eei2_part1}
 
-plot_eei2_1 <- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_3, eei_4, eei_5, eei_6, eei_7),
-                      vjust=rep(c("bottom", "top", "bottom", "top"),5),
+plot_eei2_1 <- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_3, eei_4, eei_5, eei_6),
+                      vjust=rep(c("bottom", "top", "bottom", "top"),4),
                       expand.grid =TRUE,
                       sort.frq = "last.desc",
                       geom.colors = 'Spectral',
                       show.total = FALSE,
                       )+
-  theme_light(base_size = 16) +
-  theme(legend.position="bottom")
+  theme_light() +
+  theme(legend.position="bottom", text = element_text(size = 14))
 
 
 plot_eei2_1
 
-ggsave(plot_eei2_1, file="../output/graphs/plot_eei2_1.png", width=10, height=8)
+ggsave(plot_eei2_1, file="../output/graphs/plot_eei2_1.png", width=8.5, height=8)
 
 ```
 
 ```{r eei2_part2}
 
-plot_eei2_2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_8, eei_9, eei_10, eei_11, eei_12),
-                      vjust=rep(c("bottom", "top", "bottom", "top"),5),
+plot_eei2_2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_7, eei_8),
+                      vjust=rep(c("bottom", "top", "bottom", "top"),2),
                       expand.grid =TRUE,
                       sort.frq = "last.desc",
                       geom.colors = 'Spectral',
                       show.total = FALSE,
                       )+
-  theme_light(base_size = 14) +
-  theme(legend.position="bottom")
+  theme_light() +
+  theme(legend.position="bottom", text = element_text(size = 14))
 
 
 plot_eei2_2
 
-ggsave(plot_eei2_2, file="../output/graphs/plot_eei2_2.png", width=10, height=8)
+ggsave(plot_eei2_2, file="../output/graphs/plot_eei2_2.png", width=8.4, height=8)
 
 ```
 
+```{r eei_2_part3}
+plot_eei2_3 <- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_9, eei_10, eei_11, eei_12),
+                      vjust=rep(c("bottom", "top", "bottom", "top"),4),
+                      expand.grid =TRUE,
+                      sort.frq = "last.desc",
+                      geom.colors = 'Spectral',
+                      show.total = FALSE,
+                      )+
+  theme_light() +
+  theme(legend.position="bottom", text = element_text(size = 14))
 
-```{r eei3}
-# Grid con 4 gráficos
 
-plot_eei3_1 <- hvs %>% 
-  filter(eei_13 %in% c(1, 2)) %>%
-  ggplot(aes(x = eei_13)) + 
-  geom_bar(width = 0.5, fill = "#70d968") +
-  theme_light() + 
-  scale_x_discrete(labels = c("Sí", "No")) + 
-  xlab('Respuesta') + ylab('Cantidad') + ggtitle('3.13 Falta de plazas o áreas verdes') +
-  ylim(0,130)
+plot_eei2_3
 
-plot_eei3_2 <- hvs %>% 
-  filter(eei_14 %in% c(1, 2)) %>%
-  ggplot(aes(x = eei_14)) + 
-  geom_bar(width = 0.5, fill = "#d96868") +
-  theme_light() + 
-  scale_x_discrete(labels = c("Sí", "No")) + 
-  xlab('Respuesta') + ylab('Cantidad') + ggtitle('3.14 Falta de infraestructura deportiva') +
-  ylim(0,130)
+ggsave(plot_eei2_3, file="../output/graphs/plot_eei2_3.png", width=8.4, height=8)
+```
 
-plot_eei3_3 <- hvs %>% 
-  filter(eei_15 %in% c(1, 2)) %>%
-  ggplot(aes(x = eei_15)) + 
-  geom_bar(width = 0.5, fill = "#f3c35c") +
-  theme_light() + 
-  scale_x_discrete(labels = c("Sí", "No")) + 
-  xlab('Respuesta') + ylab('Cantidad') + ggtitle('3.15 Falta de locales de alimentos saludables') +
-  ylim(0,130)
+```{r politic}
 
-plot_eei3_4 <- hvs %>% 
-  filter(eei_16 %in% c(1, 2)) %>%
-  ggplot(aes(x = eei_16)) + 
-  geom_bar(width = 0.5, fill = "#5c7cf3") +
-  theme_light() + 
-  scale_x_discrete(labels = c("Sí", "No")) + 
-  xlab('Respuesta') + ylab('Cantidad') + ggtitle('3.16 Locales de venta de comida rápida o chatarra') +
-  ylim(0,130)
+plot_politic <- sjPlot::plot_stackfrq(dplyr::select(hvs, politic_1, politic_2),
+                      vjust=rep(c("bottom", "top"),2),
+                      sort.frq = "last.desc",
+                      expand.grid =TRUE,
+                      geom.colors = 'Spectral',
+                      show.total = FALSE
+                      )+
+  theme_light() +
+  theme(legend.position="bottom", text = element_text(size = 14))
 
-plot_eei3 <- grid.arrange(plot_eei3_1, plot_eei3_2, plot_eei3_3, plot_eei3_4,
-                          ncol = 2)
+ggsave(plot_politic, file="../output/graphs/plot_politic.png", width=8.4, height=8)
 
-ggsave(plot_eei3, file="../output/graphs/plot_eei3.png", width=10, height=8)
+```
+
+```{r eei_3_1}
+
+plot_eei_3_1<- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_1_1, eei_2_1),
+                      vjust=rep(c("bottom", "top", "bottom", "top"),2),
+                      sort.frq = "last.desc",
+                      expand.grid =TRUE,
+                      geom.colors = 'Spectral',
+                      show.total = FALSE
+                      )+
+  theme_light() +
+  theme(legend.position="bottom", text = element_text(size = 14))
+
+ggsave(plot_eei_3_1, file="../output/graphs/plot_eei_3_1.png", width=7, height=8)
 
 ```
 
@@ -276,11 +302,11 @@ plot_ge <- sjPlot::plot_stackfrq(dplyr::select(hvs, starts_with("ge_")),
                       show.total = FALSE
                       )+
   theme_light() +
-  theme(legend.position="bottom")
+  theme(legend.position="bottom", text = element_text(size = 14))
 
 plot_ge
 
-ggsave(plot_ge, file="../output/graphs/plot_ge.png")
+ggsave(plot_ge, file="../output/graphs/plot_ge.png", width=8.4, height=8)
 ```
 
 

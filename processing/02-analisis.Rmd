@@ -58,7 +58,7 @@ get_labels(hvs)
 ```
 
 
-```{r eliminar*, include=FALSE}
+```{r include=FALSE}
 # Eliminar los asteriscos de las etiquetas
 
 # Obtener nombres de las columnas con etiquetas
@@ -92,11 +92,11 @@ plot_hva1 <- sjPlot::plot_stackfrq(dplyr::select(hvs, hva_1, hva_2, hva_3, hva_7
                       sort.frq = "last.desc"
                       ) +
   theme_light() +
-  theme(legend.position="bottom", text = element_text(size = 15))
+  theme(legend.position="bottom", text = element_text(size = 14))
 
 plot_hva1
 
-ggsave(plot_hva1, file="../output/graphs/plot_hva1.png", width=10, height=8)
+ggsave(plot_hva1, file="../output/graphs/plot_hva1.png", width=8.4, height=8)
 ```
 
 ```{r hva2}
@@ -108,11 +108,11 @@ plot_hva2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, hva_4, hva_5, hva_6),
                       sort.frq = "last.desc"
                       ) +
   theme_light() +
-  theme(legend.position="bottom", text = element_text(size = 15))
+  theme(legend.position="bottom", text = element_text(size = 14))
 
 plot_hva2
 
-ggsave(plot_hva2, file="../output/graphs/plot_hva2.png", width=10, height=8)
+ggsave(plot_hva2, file="../output/graphs/plot_hva2.png", width=8.4, height=8)
 ```
 
 
@@ -137,11 +137,11 @@ plot_porcentajes <- ggplot(hvs_long, aes(x = variable, y = porcentaje, fill = va
   geom_text(aes(label = paste0(porcentaje, "%")), position = "dodge") +
   scale_fill_brewer(palette = "Spectral") +
   theme_light() +
-  theme(legend.position="none", text = element_text(size = 15))
+  theme(legend.position="none", text = element_text(size = 14))
 
 plot_porcentajes
 
-ggsave(plot_porcentajes, file="../output/graphs/plot_hva_p.png", width=10, height=8)
+ggsave(plot_porcentajes, file="../output/graphs/plot_hva_p.png", width=8.4, height=8)
 
 ```
 
@@ -157,11 +157,11 @@ plot_ha1_1 <- sjPlot::plot_stackfrq(dplyr::select(hvs, ha_1, ha_2, ha_3, ha_9),
                       show.total = FALSE
                       )+
   theme_light() +
-  theme(legend.position="bottom", text = element_text(size = 15))
+  theme(legend.position="bottom", text = element_text(size = 14))
 
 plot_ha1_1
 
-ggsave(plot_ha1_1, file="../output/graphs/plot_ha1_1.png", width=10, height=8)
+ggsave(plot_ha1_1, file="../output/graphs/plot_ha1_1.png", width=8.4, height=8)
 ```
 
 ```{r ha_1_2}
@@ -174,11 +174,11 @@ plot_ha1_2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, ha_4, ha_5, ha_6, ha_7, h
                       show.total = FALSE
                       )+
   theme_light() +
-  theme(legend.position="bottom", text = element_text(size = 15))
+  theme(legend.position="bottom", text = element_text(size = 14))
 
 plot_ha1_2
 
-ggsave(plot_ha1_2, file="../output/graphs/plot_ha1_2.png", width=10, height=8)
+ggsave(plot_ha1_2, file="../output/graphs/plot_ha1_2.png", width=8.4, height=8)
 
 
 ```
@@ -193,11 +193,11 @@ plot_ha2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, ha_10, ha_11),
                       show.total = FALSE
                       )+
   theme_light() +
-  theme(legend.position = "bottom", text = element_text(size = 15))
+  theme(legend.position = "bottom", text = element_text(size = 14))
 
 plot_ha2
 
-ggsave(plot_ha2, file="../output/graphs/plot_ha2.png", width=10, height=8)
+ggsave(plot_ha2, file="../output/graphs/plot_ha2.png", width=8.4, height=8)
 
 ```
 
@@ -212,13 +212,13 @@ plot_eei2_1 <- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_3, eei_4, eei_5, eei
                       geom.colors = 'Spectral',
                       show.total = FALSE,
                       )+
-  theme_light(base_size = 16) +
-  theme(legend.position="bottom")
+  theme_light() +
+  theme(legend.position="bottom", text = element_text(size = 14))
 
 
 plot_eei2_1
 
-ggsave(plot_eei2_1, file="../output/graphs/plot_eei2_1.png", width=10, height=8)
+ggsave(plot_eei2_1, file="../output/graphs/plot_eei2_1.png", width=8.5, height=8)
 
 ```
 
@@ -232,12 +232,12 @@ plot_eei2_2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_7, eei_8),
                       show.total = FALSE,
                       )+
   theme_light() +
-  theme(legend.position="bottom", text = element_text(size = 15))
+  theme(legend.position="bottom", text = element_text(size = 14))
 
 
 plot_eei2_2
 
-ggsave(plot_eei2_2, file="../output/graphs/plot_eei2_2.png", width=10, height=8)
+ggsave(plot_eei2_2, file="../output/graphs/plot_eei2_2.png", width=8.4, height=8)
 
 ```
 
@@ -250,12 +250,12 @@ plot_eei2_3 <- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_9, eei_10, eei_11, e
                       show.total = FALSE,
                       )+
   theme_light() +
-  theme(legend.position="bottom", text = element_text(size = 15))
+  theme(legend.position="bottom", text = element_text(size = 14))
 
 
 plot_eei2_3
 
-ggsave(plot_eei2_3, file="../output/graphs/plot_eei2_3.png", width=10, height=8)
+ggsave(plot_eei2_3, file="../output/graphs/plot_eei2_3.png", width=8.4, height=8)
 ```
 
 ```{r politic}
@@ -268,9 +268,9 @@ plot_politic <- sjPlot::plot_stackfrq(dplyr::select(hvs, politic_1, politic_2),
                       show.total = FALSE
                       )+
   theme_light() +
-  theme(legend.position="bottom", text = element_text(size = 15))
+  theme(legend.position="bottom", text = element_text(size = 14))
 
-ggsave(plot_politic, file="../output/graphs/plot_politic.png", width=10, height=8)
+ggsave(plot_politic, file="../output/graphs/plot_politic.png", width=8.4, height=8)
 
 ```
 
@@ -284,9 +284,9 @@ plot_eei_3_1<- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_1_1, eei_2_1),
                       show.total = FALSE
                       )+
   theme_light() +
-  theme(legend.position="bottom", text = element_text(size = 15))
+  theme(legend.position="bottom", text = element_text(size = 14))
 
-ggsave(plot_eei_3_1, file="../output/graphs/plot_eei_3_1.png", width=10, height=8)
+ggsave(plot_eei_3_1, file="../output/graphs/plot_eei_3_1.png", width=7, height=8)
 
 ```
 
@@ -302,11 +302,11 @@ plot_ge <- sjPlot::plot_stackfrq(dplyr::select(hvs, starts_with("ge_")),
                       show.total = FALSE
                       )+
   theme_light() +
-  theme(legend.position="bottom", text = element_text(size = 11))
+  theme(legend.position="bottom", text = element_text(size = 14))
 
 plot_ge
 
-ggsave(plot_ge, file="../output/graphs/plot_ge.png")
+ggsave(plot_ge, file="../output/graphs/plot_ge.png", width=8.4, height=8)
 ```
 
 
