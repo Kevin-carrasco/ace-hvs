@@ -44,17 +44,22 @@ div.tocify {
 # packages
 
 ```{r packages}
-pacman::p_load(dplyr, sjmisc, sjlabelled, summarytools)
+pacman::p_load(dplyr, sjmisc, sjlabelled, summarytools, haven)
 ```
 
 ```{r data}
 load("input/data/proc/encuesta_hvs.RData")
+
+hvs<-readxl::read_xlsx("input/data/proc/encuesta_hvs.xlsx")
+hvs$RBD <- sub("-.*", "", hvs$carac_d2)
+writexl::write_xlsx(hvs, "input/data/proc/encuesta_hvs.xlsx")
 ```
 
 ```{r}
 class(hvs)
 class(hvs$hva_1)
 class(hvs$carac_d6)
+class(hvs$RBD)
 #sjmisc::frq(hvs$carac_d6)
 #sjmisc::frq(hvs$hva_1)
 #sjmisc::frq(hvs$hva_8)

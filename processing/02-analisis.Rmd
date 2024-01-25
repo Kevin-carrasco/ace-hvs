@@ -48,7 +48,12 @@ pacman::p_load(dplyr, ggplot2, sjmisc, sjlabelled, sjPlot, ggrepel, Hmisc, tidyv
 ```
 
 ```{r data, include=FALSE}
-load("../input/data/proc/hvs_proc.RData")
+load("input/data/proc/hvs_proc.RData")
+hvs<-readxl::read_xlsx("input/data/proc/encuesta_hvs.xlsx")
+data <- read_csv2("input/data/original/20220914_Directorio_Oficial_EE_2022_20220430_WEB.csv")
+data$RBD <- as.character(data$RBD)
+test<- left_join(hvs, data, by="RBD")
+
 ```
 ```{r variables, include=FALSE}
 names(hvs)
@@ -78,6 +83,72 @@ get_label(hvs)
 
 
 ```
+
+# Caracterización
+
+```{r}
+test <- test %>% mutate(dependencia = case_when(COD_DEPE2==1 ~ "Municipal",
+                                                COD_DEPE2==2 ~ "Part. subvencionado",
+                                                COD_DEPE2==3 ~ "Part. pagado",
+                                                COD_DEPE2==4 ~ "Adm. delegada",
+                                                COD_DEPE2==5 ~ "Serv. local educación"))
+frq(test$dependencia)
+```
+
+```{r}
+dependencia = round(prop.table(table(categorias=test$dependencia)),2)
+dependencia = as.data.frame(dependencia)
+dependencia$categorias <- factor(dependencia$categorias, levels = c(1, 2, 3, 4, 5), labels = c("Municipal", "Part. subvencionado","Part. pagado", "Adm. delegada", "Serv. local educación"))
+
+dependencia <- ggplot(dependencia,aes(x=2,y=-Freq, fill=categorias))+
+  geom_bar(stat = "identity",
+           color="white")+
+    geom_text(aes(label = scales::percent(Freq)),
+              position=position_stack(vjust=0.5),color="black",size=6)+
+  coord_polar(theta = "y")+
+  scale_fill_brewer(palette = "Set1")+
+    theme_void()+
+  theme(legend.title = element_blank())+
+  xlim(0.5,2.5)
+
+ggsave(dependencia, file="output/graphs/dependencia.png", width=8.4, height=8)
+```
+
+```{r}
+director = round(prop.table(table(categorias=test$carac_d4)),2)
+director = as.data.frame(director)
+director$categorias <- factor(director$categorias, levels = c(1, 2), labels = c("Director", "Directora"))
+
+director <- ggplot(director,aes(x=2,y=-Freq, fill=categorias))+
+  geom_bar(stat = "identity",
+           color="white")+
+    geom_text(aes(label = scales::percent(Freq)),
+              position=position_stack(vjust=0.5),color="black",size=6)+
+  coord_polar(theta = "y")+
+  scale_fill_brewer(palette = "Set1")+
+    theme_void()+
+  theme(legend.title = element_blank())+
+  xlim(0.5,2.5)
+
+ggsave(director, file="output/graphs/director.png", width=8.4, height=8)
+```
+
+```{r}
+provincia<-test %>%
+  group_by(NOM_DEPROV_RBD) %>%
+  summarise(cantidad = n()) %>%
+  ggplot(aes(x = reorder(NOM_DEPROV_RBD, cantidad), y = cantidad, fill = NOM_DEPROV_RBD)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = cantidad), vjust = -0.5, color = "black", size = 3) +  # Añade etiquetas de cantidad
+  ylab("Cantidad") +
+  xlab("Provincia") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_brewer(palette = "Set1") +
+  guides(fill = FALSE)
+
+ggsave(provincia, file="output/graphs/provincia.png", width=8.4, height=8)
+```
+
 
 
 # Hábitos de vida activa
@@ -133,7 +204,7 @@ hvs_long <- tidyr::gather(hvs, key = "variable", value = "porcentaje", promedio1
 plot_porcentajes <- ggplot(hvs_long, aes(x = variable, y = porcentaje, fill = variable)) +
   geom_bar(stat = "identity", position = "dodge") +
   scale_x_discrete(labels = c("Se trasladan al establecimiento\ncaminando o en bicicleta", "Practican deportes de manera\nextraprogramática en el establecimiento", "Practican deportes de\nmanera extraprogramática\nfuera del establecimiento")) +
-  labs(x = 'Hábitos de Estudiantes', y = "Porcentaje promedio") + 
+  labs(x = 'Hábitos de vida activa de Estudiantes', y = "Porcentaje promedio") + 
   geom_text(aes(label = paste0(porcentaje, "%")), position = "dodge") +
   scale_fill_brewer(palette = "Spectral") +
   theme_light() +
@@ -141,7 +212,7 @@ plot_porcentajes <- ggplot(hvs_long, aes(x = variable, y = porcentaje, fill = va
 
 plot_porcentajes
 
-ggsave(plot_porcentajes, file="../output/graphs/plot_hva_p.png", width=8.4, height=8)
+ggsave(plot_porcentajes, file="output/graphs/plot_hva_p.png", width=8.4, height=8)
 
 ```
 
@@ -223,7 +294,6 @@ ggsave(plot_eei2_1, file="../output/graphs/plot_eei2_1.png", width=8.5, height=8
 ```
 
 ```{r eei2_part2}
-
 plot_eei2_2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_7, eei_8),
                       vjust=rep(c("bottom", "top", "bottom", "top"),2),
                       expand.grid =TRUE,

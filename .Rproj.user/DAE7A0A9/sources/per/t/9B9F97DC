@@ -3,7 +3,7 @@
     "path": "D:/Users/kevin/Documents/ace-hvs/processing/01-preparacion.Rmd",
     "project_path": "processing/01-preparacion.Rmd",
     "type": "r_markdown",
-    "hash": "3062748517",
+    "hash": "534166240",
     "contents": "",
     "dirty": false,
     "created": 1705412945355.0,
@@ -13,15 +13,16 @@
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "34,0",
-        "scrollLine": "23"
+        "cursorPosition": "41,3",
+        "scrollLine": "0",
+        "last_setup_crc32": ""
     },
     "folds": "",
-    "lastKnownWriteTime": 1705441683,
+    "lastKnownWriteTime": 1706209131,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1705441683641,
+    "last_content_update": 1706209171267,
     "read_only": false,
     "read_only_alternatives": []
 }

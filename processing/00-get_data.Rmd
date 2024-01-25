@@ -32,6 +32,7 @@ hvs <- hvs %>% dplyr::select(-session, -created, -modified, -ended, -expired, -s
 completas <- hvs %>% filter(!is.na(ge_4))
 
 save(hvs, file="input/data/proc/encuesta_hvs.RData")
+writexl::write_xlsx(hvs, path = "input/data/proc/encuesta_hvs.xlsx")
 ```
 
 
