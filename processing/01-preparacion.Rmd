@@ -51,13 +51,12 @@ pacman::p_load(dplyr, sjmisc, sjlabelled, summarytools, haven)
 load("input/data/proc/encuesta_hvs.RData")
 
 hvs<-readxl::read_xlsx("input/data/proc/encuesta_hvs.xlsx")
-hvs$RBD <- sub("-.*", "", hvs$carac_d2)
 writexl::write_xlsx(hvs, "input/data/proc/encuesta_hvs.xlsx")
 ```
 
 ```{r}
 class(hvs)
-class(hvs$hva_1)
+class(hvs$hva_8)
 class(hvs$carac_d6)
 class(hvs$RBD)
 #sjmisc::frq(hvs$carac_d6)
@@ -71,7 +70,7 @@ class(hvs$RBD)
 ```
 
 ```{r}
-hvs <- hvs %>% rename(porcentaje_1= hva_8)
+x <- rename(hvs, porcentaje_1=hva_8)
 hvs <- hvs %>% rename(porcentaje_2= hva_9)
 hvs <- hvs %>% rename(porcentaje_3= hva_10)
 

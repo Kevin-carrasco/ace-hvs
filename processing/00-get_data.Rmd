@@ -25,12 +25,17 @@ save(data, file="input/data/original/encuesta-hvs-completa.RData") # Guardar en 
 # Filtrar solo respuestas con información
 
 ```{r}
+load("input/data/original/encuesta-hvs-completa.RData")
 hvs <- data %>% filter(!is.na(carac_d1))
 `%!in%` <- Negate(`%in%`)
 hvs <- hvs %>% filter(carac_d1 %!in% c('a', 'Agustiniano')) # eliminar dos casos de etapa prueba
 hvs <- hvs %>% dplyr::select(-session, -created, -modified, -ended, -expired, -start_01, -hva, -ha, -ge)
-completas <- hvs %>% filter(!is.na(ge_4))
+writexl::write_xlsx(hvs, path = "input/data/proc/encuesta-hvs-limpia.xlsx") # Guardar en xlsx y seleccionamos 'a mano'
+hvs<-readxl::read_xlsx("input/data/proc/encuesta-hvs-limpia.xlsx")
 
+completas <- hvs %>% filter(!is.na(ge_4))
+completas <- completas[!duplicated(completas$carac_d2),]
+hvs <- hvs[!duplicated(hvs$carac_d2),]
 save(hvs, file="input/data/proc/encuesta_hvs.RData")
 writexl::write_xlsx(hvs, path = "input/data/proc/encuesta_hvs.xlsx")
 ```
