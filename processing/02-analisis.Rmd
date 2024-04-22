@@ -53,7 +53,6 @@ load("input/data/proc/hvs_proc.RData")
 #hvs<-readxl::read_xlsx("input/data/proc/encuesta_hvs.xlsx")
 data <- read_csv2("input/data/original/20220914_Directorio_Oficial_EE_2022_20220430_WEB.csv")
 data$RBD <- as.character(data$RBD)
-hvs <- dplyr::rename(hvs, RBD=carac_d2)
 hvs$RBD<-as.factor(hvs$RBD)
 test<- left_join(hvs, data, by="RBD")
 ```
@@ -135,7 +134,7 @@ ggsave(director, file="output/graphs/director.png", width=8.4, height=8)
 ```
 
 ```{r}
-provincia<-test %>%
+provincia<-test %>% filter(!is.na(NOM_DEPROV_RBD)) %>% 
   group_by(NOM_DEPROV_RBD) %>%
   summarise(cantidad = n()) %>%
   ggplot(aes(x = reorder(NOM_DEPROV_RBD, cantidad), y = cantidad, fill = NOM_DEPROV_RBD)) +
@@ -158,7 +157,7 @@ plot_hva1 <- sjPlot::plot_stackfrq(dplyr::select(hvs, hva_1, hva_2, hva_3, hva_7
                       geom.colors = 'Spectral',
                       show.total = FALSE, 
                       vjust=rep(c("bottom", "top", "bottom", "top"),4),
-                      sort.frq = "last.desc"
+#                      sort.frq = "last.desc"
                       ) +
   theme_light() +
   theme(legend.position="bottom", text = element_text(size = 14))
@@ -174,7 +173,7 @@ plot_hva2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, hva_4, hva_5, hva_6),
                       geom.colors = 'Spectral',
                       show.total = FALSE, 
                       vjust=rep(c("bottom", "top", "bottom", "top"),3),
-                      sort.frq = "last.desc"
+#                      sort.frq = "last.desc"
                       ) +
   theme_light() +
   theme(legend.position="bottom", text = element_text(size = 14))
@@ -188,9 +187,9 @@ ggsave(plot_hva2, file="output/graphs/plot_hva2.png", width=8.4, height=8)
 ```{r hva porcentajes}
 # Promedios de las 3 variables de porcentaje
 
-hvs$promedio1 <-  mean(as.numeric(hvs$hva_8), na.rm = TRUE)
-hvs$promedio2 <-  mean(as.numeric(hvs$hva_9), na.rm = TRUE)
-hvs$promedio3 <-  mean(as.numeric(hvs$hva_10), na.rm = TRUE)
+hvs$promedio1 <-  mean(as.numeric(hvs$porcentaje_1), na.rm = TRUE)
+hvs$promedio2 <-  mean(as.numeric(hvs$porcentaje_2), na.rm = TRUE)
+hvs$promedio3 <-  mean(as.numeric(hvs$porcentaje_3), na.rm = TRUE)
 
 hvs$promedio1 <- round(hvs$promedio1, digits = 1)
 hvs$promedio2 <- round(hvs$promedio2, digits = 1)
@@ -210,7 +209,6 @@ plot_porcentajes <- ggplot(hvs_long, aes(x = variable, y = porcentaje, fill = va
 plot_porcentajes
 
 ggsave(plot_porcentajes, file="output/graphs/plot_hva_p.png", width=8.4, height=8)
-
 ```
 
 # Hábitos alimenticios
@@ -219,7 +217,7 @@ ggsave(plot_porcentajes, file="output/graphs/plot_hva_p.png", width=8.4, height=
 plot_ha1_1 <- sjPlot::plot_stackfrq(dplyr::select(hvs, ha_1, ha_2, ha_3, ha_9),
                       vjust=rep(c("bottom", "top", "bottom", "top"),4),
                       expand.grid =TRUE,
-                      sort.frq = "last.desc",
+#                      sort.frq = "last.desc",
                       geom.colors = 'Spectral',
                       show.total = FALSE
                       )+
@@ -232,11 +230,10 @@ ggsave(plot_ha1_1, file="output/graphs/plot_ha1_1.png", width=8.4, height=8)
 ```
 
 ```{r ha_1_2}
-
 plot_ha1_2 <- sjPlot::plot_stackfrq(dplyr::select(hvs, ha_4, ha_5, ha_6, ha_7, ha_8),
                       vjust=rep(c("bottom", "top", "bottom", "top"),5),
                       expand.grid =TRUE,
-                      sort.frq = "last.desc",
+#                      sort.frq = "last.desc",
                       geom.colors = 'Spectral',
                       show.total = FALSE
                       )+
@@ -251,28 +248,39 @@ ggsave(plot_ha1_2, file="output/graphs/plot_ha1_2.png", width=8.4, height=8)
 
 
 ```{r ha2}
+frq(hvs$ha_11)
+categorias_ha_10 <- c("Nunca", "1 vez a la semana", "2 a 4 veces a la semana", "Todos los días")
+# Recodificar ha_11 para que tenga las mismas categorías que ha_10
+hvs <- hvs %>%
+  mutate(ha_11 = factor(ha_11,
+                              levels = c("Nunca", "2 vez a la semana", 
+                                         "3 a 4 veces a la semana", "Todos los días"),
+                              labels = categorias_ha_10))
+hvs$ha_11 <- set_label(x = hvs$ha_11,label = "2.11 Comen comida rápida en su escuela (por ejemplo, sopaipillas, completos, pizzas, hamburguesas, etc.)")
+
+
 plot_ha2 <- hvs %>% 
   dplyr::select(ha_10, ha_11) %>% 
-  na.omit() %>% 
-  sjPlot::plot_stackfrq(., expand.grid = TRUE, geom.colors = 'Spectral', show.total = FALSE) +
-  scale_fill_manual(values = c("#d53e4f", "#fdae61", "#abdda4", "#2b83ba")) +  # Asignación manual de los colores rojo, naranja, verde y azul de la paleta "Spectral"
+#  na.omit() %>% 
+  sjPlot::plot_stackfrq(., 
+                        expand.grid = TRUE, 
+                        geom.colors = 'Spectral', 
+                        show.total = FALSE) +
   theme_light() +
   theme(legend.position = "bottom", text = element_text(size = 14))
 
 plot_ha2
 
 ggsave(plot_ha2, file="output/graphs/plot_ha2.png", width=8.4, height=8)
-
 ```
 
 # Enfoque escolar integral
 
 ```{r eei2_part1}
-
 plot_eei2_1 <- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_3, eei_4, eei_5, eei_6),
                       vjust=rep(c("bottom", "top", "bottom", "top"),4),
                       expand.grid =TRUE,
-                      sort.frq = "last.desc",
+#                      sort.frq = "last.desc",
                       geom.colors = 'Spectral',
                       show.total = FALSE,
                       )+
@@ -288,6 +296,7 @@ ggsave(plot_eei2_1, file="output/graphs/plot_eei2_1.png", width=8.5, height=8)
 ```{r eei2_part2}
 plot_eei2_2 <- sjPlot::plot_stackfrq(
   dplyr::select(hvs, eei_7, eei_8),
+                      vjust=rep(c("bottom", "top", "bottom", "top"),2),
   expand.grid = TRUE,
   geom.colors = 'Spectral',
   show.total = FALSE,
@@ -299,14 +308,14 @@ plot_eei2_2 <- sjPlot::plot_stackfrq(
 plot_eei2_2
 
 ggsave(plot_eei2_2, file="output/graphs/plot_eei2_2.png", width=8.4, height=8)
-
 ```
 
 ```{r eei_2_part3}
-plot_eei2_3 <- sjPlot::plot_stackfrq(dplyr::select(hvs, eei_9, eei_10, eei_11, eei_12),
+plot_eei2_3 <- 
+  sjPlot::plot_stackfrq(dplyr::select(hvs, eei_9, eei_10, eei_11, eei_12),
                       vjust=rep(c("bottom", "top", "bottom", "top"),4),
                       expand.grid =TRUE,
-                      sort.frq = "last.desc",
+#                      sort.frq = "last.desc",
                       geom.colors = 'Spectral',
                       show.total = FALSE,
                       )+
@@ -321,7 +330,7 @@ ggsave(plot_eei2_3, file="output/graphs/plot_eei2_3.png", width=8.4, height=8)
 
 ```{r politic}
 plot_politic <- sjPlot::plot_stackfrq(
-  dplyr::select(hvs, eei_1, eei_2),
+  dplyr::select(hvs, politic_1, politic_2),
   expand.grid = TRUE,
   geom.colors = 'Spectral',
   show.total = FALSE
@@ -329,14 +338,15 @@ plot_politic <- sjPlot::plot_stackfrq(
   theme_light() +
   theme(legend.position = "bottom", text = element_text(size = 14))
 
+plot_politic
 
 ggsave(plot_politic, file="output/graphs/plot_politic.png", width=8.4, height=8)
-
 ```
 
 ```{r eei_3_1}
 plot_eei_3_1 <- sjPlot::plot_stackfrq(
   dplyr::select(hvs, eei_1_1, eei_2_1),
+                      vjust=rep(c("bottom", "top", "bottom", "top"),2),
   expand.grid = TRUE,
   geom.colors = 'Spectral',
   show.total = FALSE
@@ -353,7 +363,7 @@ ggsave(plot_eei_3_1, file = "output/graphs/plot_eei_3_1.png", width = 7, height 
 ```{r ge}
 plot_ge <- sjPlot::plot_stackfrq(dplyr::select(hvs, starts_with("ge_")),
                       vjust=rep(c("bottom", "top", "bottom", "top"),4),
-                      sort.frq = "last.desc",
+#                      sort.frq = "last.desc",
                       expand.grid =TRUE,
                       geom.colors = 'Spectral',
                       show.total = FALSE

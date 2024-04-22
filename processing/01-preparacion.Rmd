@@ -50,8 +50,9 @@ pacman::p_load(dplyr, sjmisc, sjlabelled, summarytools, haven)
 ```{r data}
 load("input/data/proc/encuesta_hvs.RData")
 
-hvs<-readxl::read_xlsx("input/data/proc/encuesta_hvs.xlsx")
-writexl::write_xlsx(hvs, "input/data/proc/encuesta_hvs.xlsx")
+#hvs<-readxl::read_xlsx("input/data/proc/encuesta_hvs.xlsx")
+#hvs$RBD <- sub("-.*", "", hvs$carac_d2)
+#writexl::write_xlsx(hvs, "input/data/proc/encuesta_hvs.xlsx")
 ```
 
 ```{r}
@@ -70,12 +71,12 @@ class(hvs$RBD)
 ```
 
 ```{r}
-x <- rename(hvs, porcentaje_1=hva_8)
-hvs <- hvs %>% rename(porcentaje_2= hva_9)
-hvs <- hvs %>% rename(porcentaje_3= hva_10)
+hvs <- hvs %>% dplyr::rename(porcentaje_1= hva_8)
+hvs <- hvs %>% dplyr::rename(porcentaje_2= hva_9)
+hvs <- hvs %>% dplyr::rename(porcentaje_3= hva_10)
 
-hvs <- hvs %>% rename(politic_1= eei_1)
-hvs <- hvs %>% rename(politic_2= eei_2)
+hvs <- hvs %>% dplyr::rename(politic_1= eei_1)
+hvs <- hvs %>% dplyr::rename(politic_2= eei_2)
 
 hvs <- hvs %>% 
   mutate_at(vars(starts_with(c("hva_", "ha_", "eei_", "ge_"))), ~ set_na(., na = c(5,6,7,8)))
